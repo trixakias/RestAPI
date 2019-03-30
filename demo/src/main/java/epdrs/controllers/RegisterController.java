@@ -36,19 +36,28 @@ public class RegisterController {
 	@Autowired
 	TokenRepository tokenRepository;
 
+
 	@PostMapping("/newUser")
 	public void save(@Valid @RequestBody Credential credential) {
 
 		String parentId = credential.getParentId();
 		Optional<Credential> result = credentialRepository.findById(parentId);
 		if (result.isPresent()) {
+			String email=credential.getEmail();
+			if( ! (credentialRepository.findByEmail(email).isEmpty()) ) {
+				throw new RuntimeException("Email already in use");
+			}
+			String username=credential.getUsername();
+			if( ! (credentialRepository.findByusername(username).isEmpty()) ) {
+				throw new RuntimeException("Username already in use");
+			}
 			credentialRepository.save(credential);
-			sendMail(credential);
+			sendMail(credential.getEmail(),credential);
 		} else {
 			throw new RuntimeException("INVALID PARENT ID THROUGH REGISTRATION");
 		}
-
 	}
+
 
 	public void sendMail(Credential credential) {
 		try {
