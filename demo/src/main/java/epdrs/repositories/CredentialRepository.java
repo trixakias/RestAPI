@@ -21,6 +21,7 @@ public interface CredentialRepository extends MongoRepository<Credential,String>
     List<Credential> findBypassword(String password);
     List <Credential> findByUsernameAndPassword(String username,String password);
     List<Credential> findByParentId(String parentId);
+    List<Credential> findByEmail(String email);
 
     
 }

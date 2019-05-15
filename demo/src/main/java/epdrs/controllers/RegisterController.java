@@ -52,7 +52,7 @@ public class RegisterController {
 				throw new RuntimeException("Username already in use");
 			}
 			credentialRepository.save(credential);
-			sendMail(credential.getEmail(),credential);
+//			sendMail(credential);
 		} else {
 			throw new RuntimeException("INVALID PARENT ID THROUGH REGISTRATION");
 		}
@@ -97,7 +97,7 @@ public class RegisterController {
 			transport.sendMessage(mailmessage, mailmessage.getAllRecipients());
 
 		} catch (Exception ex) {
-
+				System.out.println(ex.getMessage());
 		}
 
 	}
