@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "*")
 public class TreeViewController {
 
-	int count = 0;
+//	int count = 0;
 
 	@Autowired
 	private CredentialRepository credentialRepository;
@@ -34,29 +35,29 @@ public class TreeViewController {
 	@Autowired
 	private TokenRepository tokenRepository;
 
-	@PostMapping("/childrenOfUser/{userId}")
+	@GetMapping("/childrenOfUser/{userId}")
 	public List<Credential> returnChildern(@PathVariable("userId") String userId,
 			@RequestHeader("TOKEN") String tokenAlphanumeric)  throws RuntimeException {
 		validateToken(tokenAlphanumeric);
 		return credentialRepository.findByParentId(userId);
 	}
 
-	@PostMapping("/getNumberOfTotalFollowers/{usersID}")
+	@GetMapping("/getNumberOfTotalFollowers/{usersID}")
 	public int numberOfTotalFollowers(@PathVariable("usersID") String usersID,@RequestHeader("TOKEN") String tokenAlphanumeric) throws RuntimeException {
 		validateToken(tokenAlphanumeric);
-		count = 0;
+		int count = 0;
 		List<Credential> children = credentialRepository.findByParentId(usersID);
-		return getNumberOfFollowers(children);
+		return getNumberOfFollowers(children,count);
 	}
 
 	
 	
-	public int getNumberOfFollowers(List<Credential> children) {
+	public int getNumberOfFollowers(List<Credential> children, int count) {
 		if (!(children.size() == 0)) {
 			for (Credential child : children) {
 				count = count + 1;
 				List<Credential> grandChildren = credentialRepository.findByParentId(child.getId());
-				getNumberOfFollowers(grandChildren);
+				getNumberOfFollowers(grandChildren,count);
 			}
 		}
 		return count;

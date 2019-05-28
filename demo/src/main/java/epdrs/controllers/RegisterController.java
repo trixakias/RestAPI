@@ -102,7 +102,7 @@ public class RegisterController {
 
 	}
 
-	@GetMapping("/enable/{alphanumeric}")
+	@PostMapping("/enable/{alphanumeric}")
 	public String enableAccount(@PathVariable String alphanumeric) {
 		Token token = tokenRepository.findByAlphanumeric(alphanumeric);
 		Optional<Credential> result = credentialRepository.findById(token.getUsersId());
