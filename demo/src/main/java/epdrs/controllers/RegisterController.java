@@ -1,9 +1,5 @@
 package epdrs.controllers;
 
-import epdrs.repositories.TokenRepository;
-import epdrs.repositories.CredentialRepository;
-import epdrs.model.Token;
-import epdrs.model.Credential;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.UUID;
@@ -14,16 +10,19 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import epdrs.model.Credential;
+import epdrs.model.Token;
+import epdrs.repositories.CredentialRepository;
+import epdrs.repositories.TokenRepository;
 
 @RestController
 @RequestMapping("/register")
@@ -36,19 +35,18 @@ public class RegisterController {
 	@Autowired
 	TokenRepository tokenRepository;
 
-
 	@PostMapping("/newUser")
 	public void save(@Valid @RequestBody Credential credential) {
 
 		String parentId = credential.getParentId();
 		Optional<Credential> result = credentialRepository.findById(parentId);
 		if (result.isPresent()) {
-			String email=credential.getEmail();
-			if( ! (credentialRepository.findByEmail(email).isEmpty()) ) {
+			String email = credential.getEmail();
+			if (!(credentialRepository.findByEmail(email).isEmpty())) {
 				throw new RuntimeException("Email already in use");
 			}
-			String username=credential.getUsername();
-			if( ! (credentialRepository.findByusername(username).isEmpty()) ) {
+			String username = credential.getUsername();
+			if (!(credentialRepository.findByusername(username).isEmpty())) {
 				throw new RuntimeException("Username already in use");
 			}
 			credentialRepository.save(credential);
@@ -58,14 +56,11 @@ public class RegisterController {
 		}
 	}
 
-
 	public void sendMail(Credential credential) {
 		try {
-			Credential credentialThatHasid = credentialRepository
-					.findByUsernameAndPassword(credential.getUsername(), credential.getPassword()).get(0);
+			Credential credentialThatHasid = credentialRepository.findByUsernameAndPassword(credential.getUsername(), credential.getPassword()).get(0);
 			String alphanumeric = UUID.randomUUID().toString();
-			Token token = new Token(alphanumeric, credentialThatHasid.getId(), credentialThatHasid.getUsername(),
-					credential.getEnabled());
+			Token token = new Token(alphanumeric, credentialThatHasid.getId(), credentialThatHasid.getUsername(), credential.getEnabled());
 			tokenRepository.save(token);
 
 			String fromEmail = ""; // your mail here
@@ -97,7 +92,7 @@ public class RegisterController {
 			transport.sendMessage(mailmessage, mailmessage.getAllRecipients());
 
 		} catch (Exception ex) {
-				System.out.println(ex.getMessage());
+			System.out.println(ex.getMessage());
 		}
 
 	}

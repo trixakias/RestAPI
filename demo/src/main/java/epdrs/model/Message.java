@@ -1,6 +1,5 @@
 package epdrs.model;
 
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -9,26 +8,27 @@ import java.util.Date;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection="message")
+@Document(collection = "message")
 public class Message {
-	
+
 	@Id
 	private String id;
 	private Credential sender;
 	private Credential receiver;
 	private String text;
 	private String date;
-	
-	public Message() {}
-	
+
+	public Message() {
+	}
+
 	public Message(Credential sender, Credential receiver, String text) {
 		this.sender = sender;
 		this.receiver = receiver;
 		this.text = text;
-		Date date = Calendar.getInstance().getTime();  
-    	DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
-    	String strDate = dateFormat.format(date);   
-		this.date= strDate;
+		Date date = Calendar.getInstance().getTime();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
+		String strDate = dateFormat.format(date);
+		this.date = strDate;
 	}
 
 	public String getId() {
@@ -71,7 +71,4 @@ public class Message {
 		this.date = date;
 	}
 
-	
-	
-	
 }

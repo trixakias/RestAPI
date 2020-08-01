@@ -11,23 +11,16 @@ public class MessageFromFrontend {
 	private String receiverID;
 	private String text;
 	private String date;
-	
-	
-	
-	
+
 	public MessageFromFrontend(String senderID, String receiverID, String text) {
 		this.senderID = senderID;
 		this.receiverID = receiverID;
 		this.text = text;
-		Date date = Calendar.getInstance().getTime();  
-    	DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
-    	String strDate = dateFormat.format(date);   
-		this.date= strDate;
+		Date date = Calendar.getInstance().getTime();
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
+		String strDate = dateFormat.format(date);
+		this.date = strDate;
 	}
-
-	
-
-	
 
 	public String getSenderID() {
 		return senderID;
@@ -60,5 +53,5 @@ public class MessageFromFrontend {
 	public void setDate(String date) {
 		this.date = date;
 	}
-	
+
 }

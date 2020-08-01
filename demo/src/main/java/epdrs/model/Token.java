@@ -3,7 +3,7 @@ package epdrs.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection="token")
+@Document(collection = "token")
 public class Token {
 
 	@Id
@@ -12,28 +12,29 @@ public class Token {
 	private String usersId;
 	private String username;
 	private Boolean enabledUser;
-	 
-	public Token() {}
-	
-	public Token( String alphanumeric, String usersId, String username, Boolean enabledUser) {
+
+	public Token() {
+	}
+
+	public Token(String alphanumeric, String usersId, String username, Boolean enabledUser) {
 		this.alphanumeric = alphanumeric;
 		this.usersId = usersId;
-		this.username=username;
-		this.enabledUser=enabledUser;
+		this.username = username;
+		this.enabledUser = enabledUser;
 	}
+
 	public String getId() {
 		return id;
 	}
+
 	public void setId(String id) {
 		this.id = id;
 	}
-	
-	
+
 	public String getAlphanumeric() {
 		return alphanumeric;
 	}
-	
-	
+
 	public String getUsername() {
 		return username;
 	}
@@ -45,9 +46,11 @@ public class Token {
 	public void setAlphanumeric(String alphanumeric) {
 		this.alphanumeric = alphanumeric;
 	}
+
 	public String getUsersId() {
 		return usersId;
 	}
+
 	public void setUsersId(String usersId) {
 		this.usersId = usersId;
 	}
@@ -59,8 +62,5 @@ public class Token {
 	public void setEnabledUser(Boolean enabledUser) {
 		this.enabledUser = enabledUser;
 	}
-	
-	
-	
-	
+
 }

@@ -8,7 +8,6 @@ public class EpidrasiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(EpidrasiApplication.class, args);
-	
-        }
+	}
 
 }

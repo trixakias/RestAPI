@@ -5,25 +5,20 @@
  */
 package epdrs.repositories;
 
-import epdrs.model.Credential;
-import epdrs.model.Message;
 import java.util.List;
+
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-/**
- *
- * @author tasos
- */
+import epdrs.model.Credential;
+import epdrs.model.Message;
 
 @Repository
 @CrossOrigin(origins = "*")
-public interface MessageRepository extends MongoRepository<Message,String> {
-    
-//     List<Message>  findByReceiverID(String receiverID);
+public interface MessageRepository extends MongoRepository<Message, String> {
 
-    List<Message> findByReceiverAndSenderOrSenderAndReceiverOrderByDateAsc(Credential receiver,Credential sender,Credential sender2,Credential receiver2);
-   
-    List <Message> findByReceiverOrSender(Credential receiver,Credential sender);
+	List<Message> findByReceiverAndSenderOrSenderAndReceiverOrderByDateAsc(Credential receiver, Credential sender, Credential sender2, Credential receiver2);
+
+	List<Message> findByReceiverOrSender(Credential receiver, Credential sender);
 }

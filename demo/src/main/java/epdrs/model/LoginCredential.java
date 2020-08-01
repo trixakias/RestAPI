@@ -2,13 +2,13 @@ package epdrs.model;
 
 public class LoginCredential {
 
-	
 	private String username;
-	
+
 	private String password;
 
-	public LoginCredential() {}
-	
+	public LoginCredential() {
+	}
+
 	public LoginCredential(String username, String password) {
 		this.username = username;
 		this.password = password;
@@ -29,8 +29,5 @@ public class LoginCredential {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
-	
-	
+
 }

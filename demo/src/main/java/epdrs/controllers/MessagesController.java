@@ -1,13 +1,5 @@
 package epdrs.controllers;
 
-import epdrs.repositories.CredentialRepository;
-import epdrs.repositories.MessageRepository;
-import epdrs.repositories.TokenRepository;
-import epdrs.model.Credential;
-import epdrs.model.Message;
-import epdrs.model.MessageFromFrontend;
-import epdrs.model.Token;
-
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,7 +16,13 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import epdrs.model.Credential;
+import epdrs.model.Message;
+import epdrs.model.MessageFromFrontend;
+import epdrs.model.Token;
+import epdrs.repositories.CredentialRepository;
+import epdrs.repositories.MessageRepository;
+import epdrs.repositories.TokenRepository;
 
 @RestController
 @RequestMapping("/saveMessages")
@@ -41,8 +39,7 @@ public class MessagesController {
 	private CredentialRepository credentialRepository;
 
 	@PostMapping("/message")
-	public void saveMessages(@RequestBody List<MessageFromFrontend> messages,
-			@RequestHeader("TOKEN") String tokenAlphanumeric) throws RuntimeException {
+	public void saveMessages(@RequestBody List<MessageFromFrontend> messages, @RequestHeader("TOKEN") String tokenAlphanumeric) throws RuntimeException {
 		validateToken(tokenAlphanumeric);
 		sendMessages(messages);
 
@@ -67,22 +64,16 @@ public class MessagesController {
 		}
 	}
 
-
-
 	@GetMapping("/getChatBetween/{receiverID}/{senderID}")
-	public List<Message> getChat(@PathVariable String receiverID, @PathVariable String senderID,
-			@RequestHeader("TOKEN") String tokenAlphanumeric) throws RuntimeException {
-			validateToken(tokenAlphanumeric);
-			Credential receiver = getCredentialFromId(receiverID);
-			Credential sender = getCredentialFromId(senderID);
-			return messageRepository.findByReceiverAndSenderOrSenderAndReceiverOrderByDateAsc(receiver, sender,
-					receiver, sender);
+	public List<Message> getChat(@PathVariable String receiverID, @PathVariable String senderID, @RequestHeader("TOKEN") String tokenAlphanumeric) throws RuntimeException {
+		validateToken(tokenAlphanumeric);
+		Credential receiver = getCredentialFromId(receiverID);
+		Credential sender = getCredentialFromId(senderID);
+		return messageRepository.findByReceiverAndSenderOrSenderAndReceiverOrderByDateAsc(receiver, sender, receiver, sender);
 	}
 
-	
 	@GetMapping("/getUsersWithActiveChat/{userId}")
-	public List<Credential> getChatConversationsList(@PathVariable String userId,
-			@RequestHeader("TOKEN") String tokenAlphanumeric) throws RuntimeException {
+	public List<Credential> getChatConversationsList(@PathVariable String userId, @RequestHeader("TOKEN") String tokenAlphanumeric) throws RuntimeException {
 		validateToken(tokenAlphanumeric);
 		Credential user = getCredentialFromId(userId);
 		List<Message> chat = messageRepository.findByReceiverOrSender(user, user);
@@ -110,7 +101,6 @@ public class MessagesController {
 		return credentialChatList;
 	}
 
-	
 	public Credential getCredentialFromId(String ID) {
 		Optional<Credential> result = credentialRepository.findById(ID);
 		Credential credential = null;
@@ -122,7 +112,6 @@ public class MessagesController {
 		}
 	}
 
-	
 	public void validateToken(String tokenAlphanumeric) {
 		Token token = tokenRepository.findByAlphanumeric(tokenAlphanumeric);
 		if (token == null) {
